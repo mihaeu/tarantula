@@ -1,2 +1,5 @@
 # ignore 3rd party composer packages
 /vendor/
+
+# server tests
+PrivateCrawlerTest.php

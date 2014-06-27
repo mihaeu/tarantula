@@ -2,7 +2,7 @@
 
 namespace Mihaeu\Tarantula;
 
-use GuzzleHttp\Client;
+use Guzzle\Http\Client;
 
 /**
  * HttpClient
@@ -23,7 +23,17 @@ class HttpClient
     /**
      * @var Array
      */
-    private $options = array();
+    private $options;
+
+    /**
+     * @var String
+     */
+    private $user;
+
+    /**
+     * @var String
+     */
+    private $password;
 
     /**
      * Constructor.
@@ -32,7 +42,30 @@ class HttpClient
      * 
      * @return void
      */
-    public function __construct($startUrl)
+    public function __construct($startUrl, $options = array())
+    {
+        $this->setStartUrl($startUrl);
+        $this->setOptions($options);
+    }
+
+    /**
+     * Set basic authentication.
+     * 
+     * @param String $user
+     * @param String $password
+     */
+    public function setAuth($user, $password = '')
+    {
+        $this->user = $user;
+        $this->password = $password;
+    }
+
+    /**
+     * Set start url.
+     * 
+     * @param String $startUrl
+     */
+    public function setStartUrl($startUrl)
     {
         $this->startUrl = trim($startUrl, '/');
     }
@@ -56,15 +89,21 @@ class HttpClient
      * 
      * @return String
      */
-    function downloadContent($url)
+    public function downloadContent($url)
     {
         $client = new Client();
+
         $body = '';
         try {
-            $response = $client->get($url, $this->options);
+            $request = $client->get($url, $this->options);
+            if ($this->user) {
+                $request->setAuth($this->user, $this->password);
+            }
+            $response = $request->send();
             $body = $response->getBody();
         } catch (\Exception $e) {
-            // log
+            // This is not fatal, because we're simply going
+            // to return an empty result.
         }
 
         return (string) $body;

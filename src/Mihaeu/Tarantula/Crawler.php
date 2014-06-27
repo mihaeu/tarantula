@@ -50,9 +50,10 @@ class Crawler
         $links = $this->findAllLinks($html);
         
         // recursive calls provide depth
-        if (--$depth !== 0) {
+        --$depth;
+        if ($depth !== 0) {
             foreach ($links as $link) {
-                $links += $this->go($link, $depth);
+                $links += $this->go($depth, $link['target']);
             }
         }
 
