@@ -1,0 +1,2 @@
+# ignore 3rd party composer packages
+/vendor/

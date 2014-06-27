@@ -1,0 +1,26 @@
+{
+    "name": "mihaeu/tarantula",
+    "description": "Another PHP 5.4 crawler based on Guzzle.",
+    "keywords": ["crawler", "spider"],
+    "homepage": "https://github.com/mihaeu/tarantula",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Haeuslmann",
+            "email": "haeuslmann@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Mihaeu": "src"
+        }
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "guzzlehttp/guzzle": "4.1.*",
+        "symfony/dom-crawler": "2.5.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.1.*"
+    }
+}
