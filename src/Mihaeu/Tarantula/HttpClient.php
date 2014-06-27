@@ -21,13 +21,18 @@ class HttpClient
     private $startUrl;
 
     /**
+     * @var Array
+     */
+    private $options = array();
+
+    /**
      * Constructor.
      *
      * @param  String $startUrl 
      * 
      * @return void
      */
-    public function __construct($startUrl = null)
+    public function __construct($startUrl)
     {
         $this->startUrl = trim($startUrl, '/');
     }
@@ -51,12 +56,12 @@ class HttpClient
      * 
      * @return String
      */
-    function downloadContent($url, $options = [])
+    function downloadContent($url)
     {
         $client = new Client();
         $body = '';
         try {
-            $response = $client->get($url, $options);
+            $response = $client->get($url, $this->options);
             $body = $response->getBody();
         } catch (\Exception $e) {
             // log
@@ -86,9 +91,19 @@ class HttpClient
      */
     public function convertToAbsoluteUrl($url)
     {
-        if (strpos($url, '/') === 0) {
+        if (strpos($url, '/') === 0 || strpos($url, 'http') !== 0) {
             $url = $this->startUrl.$url;
         }
         return $url;
+    }
+
+    /**
+     * Set options.
+     * 
+     * @param array $options
+     */
+    public function setOptions($options = array())
+    {
+        $this->options = $options;
     }
 }
