@@ -38,12 +38,19 @@ class CrawlCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // set up client
         $client = new HttpClient($input->getArgument('url'));
         if ($input->getOption('user')) {
             $client->setAuth($input->getOption('user'), $input->getOption('password'));
         }
+        
+        // set up crawler
         $crawler = new Crawler($client);
-        $crawler->addAction(new SaveHashedResultAction('/tmp/static'));
+
+        // add actions (order matters!)
+        if ($input->getOption('save-hashed')) {
+            $crawler->addAction(new SaveHashedResultAction($input->getOption('save-hashed')));
+        }
 
         $depth = $input->getOption('depth') ? $input->getOption('depth') : 1;
         $links = $crawler->go($depth);
