@@ -3,7 +3,7 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-use Mihaeu\Tarantula\CrawlCommand;
+use Mihaeu\Tarantula\Console\CrawlCommand;
 
 use Symfony\Component\Console\Application;
 
