@@ -43,12 +43,12 @@ class CrawlCommand extends Command
         $depth = $input->getOption('depth') ? $input->getOption('depth') : 1;
         $links = $crawler->go($depth);
 
-        foreach ($links as $link) {
-            $output->writeln(sprintf('Found <info>%s</info>', $link['target']));
+        foreach ($links as $hash => $link) {
+            $output->writeln(sprintf('Found <info>%s</info>', $link));
         }
         $output->writeln(sprintf(
             '------------------------------'.PHP_EOL
-            .'Links crawled <info>%s</info>', count($links))
+            .'Links found <info>%s</info> (depth: %d)', count($links), $depth)
         );
     }
 }

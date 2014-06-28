@@ -17,14 +17,17 @@ class Crawler
     private $client;
 
     /**
+     * @var Array
+     */
+    private $allLinks = array();
+
+    /**
      * Constructor.
      *
      * @param HttpClient $client
      * @param  Array   $options  Options for Guzzle's request options see
      *                           [Guzzle Documentation](http://docs.guzzlephp.org/en/latest/quickstart.html#make-a-request)
      *                           E.g. ['auth' =>  ['admin', 'admin']] for basic authentication
-     * 
-     * @return  void
      */
     public function __construct(HttpClient $client, $options = array())
     {
@@ -48,22 +51,24 @@ class Crawler
 
         $html = $this->client->downloadContent($url);
         $links = $this->findAllLinks($html);
+        $this->allLinks = array_merge($this->allLinks, $links);
         
         // recursive calls provide depth
         --$depth;
         if ($depth !== 0) {
-            foreach ($links as $link) {
-                $links += $this->go($depth, $link['target']);
+            foreach ($links as $hash => $link) {
+                $this->allLinks = array_merge($this->allLinks, $this->go($depth, $link));
             }
         }
 
-        return $links;       
+        return $this->allLinks;
     }
 
     /**
      * Finds all links from a HTML document.
      *
      * @param String $html
+     * @param bool   $foreignLinks
      * 
      * @return Array
      */
@@ -78,23 +83,30 @@ class Crawler
 
             // this url has already been parsed
             if ($url === '#') {
-                return;
+                return array();
             }
 
             $url = $this->client->convertToAbsoluteUrl($url);
             
             // no foreign links
             if ($foreignLinks === false && strpos($url, $this->client->getStartUrl()) !== 0) {
-                return;
+                return array();
             }
 
-            return [
+            return array(
                 'hash'   => $this->client->createHashFromUrl($url),
                 'target' => $url
-            ];
+            );
         });
 
-        // remove empty entries
-        return array_filter($links);
+        $cleanLinks = array();
+        foreach ($links as $link) {
+            // only gather links that have not been processed yet
+            if (!empty($link) && !isset($this->allLinks[$link['hash']])) {
+                $cleanLinks[$link['hash']] = $link['target'];
+            }
+        }
+
+        return $cleanLinks;
     }
 }
