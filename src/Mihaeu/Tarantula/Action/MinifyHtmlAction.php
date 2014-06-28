@@ -25,7 +25,12 @@ class MinifyHtmlAction implements ActionInterface
      */
     public function execute(Result $result)
     {
-        $result->setData(HTMLMinify::minify($result->getData()));
+        $result->setData(
+            HTMLMinify::minify(
+                $result->getData(),
+                array('optimizationLevel' => HTMLMinify::OPTIMIZATION_ADVANCED)
+            )
+        );
         return $result;
     }
 }
