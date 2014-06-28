@@ -3,3 +3,6 @@
 
 # server tests
 PrivateCrawlerTest.php
+
+# IDE
+/.idea
