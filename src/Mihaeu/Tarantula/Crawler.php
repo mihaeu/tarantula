@@ -2,6 +2,8 @@
 
 namespace Mihaeu\Tarantula;
 
+use Mihaeu\Tarantula\Action\ActionInterface; 
+
 use Symfony\Component\DomCrawler\Crawler as DOMCrawler;
 
 /**
@@ -20,6 +22,11 @@ class Crawler
      * @var Array
      */
     private $allLinks = array();
+
+    /**
+     * @var Array
+     */
+    private $actions = array();
 
     /**
      * Constructor.
@@ -49,19 +56,43 @@ class Crawler
             $url = $this->client->getStartUrl();
         }
 
-        $html = $this->client->downloadContent($url);
-        $links = $this->findAllLinks($html);
-        $this->allLinks = array_merge($this->allLinks, $links);
-        
-        // recursive calls provide depth
-        --$depth;
-        if ($depth !== 0) {
+        // download from the url
+        $data = $this->client->downloadContent($url);
+        if (empty($data)) {
+            return array();
+        }
+
+        // process the result
+        $hash = $this->client->createHashFromUrl($url);
+        $result = new Result($hash, $url, $data);
+        foreach ($this->actions as $action) {
+            $result = $action->execute($result);
+        }
+        unset($result);
+
+        // when we reach max. depth we don't need to go deeper and download more
+        if ($depth-- !== 0) {
+            // parse sub links
+            $links = $this->findAllLinks($data);
+            $this->allLinks = array_merge($this->allLinks, $links);
+
+            // recursive calls provide depth
             foreach ($links as $hash => $link) {
                 $this->allLinks = array_merge($this->allLinks, $this->go($depth, $link));
             }
         }
 
         return $this->allLinks;
+    }
+
+    /**
+     * Add actions that will be executed on the results.
+     * 
+     * @param ActionInterface $action
+     */
+    public function addAction(ActionInterface $action)
+    {
+        $this->actions[] = $action;
     }
 
     /**
