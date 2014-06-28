@@ -109,26 +109,29 @@ class Crawler
         $domCrawler->addContent($html);
 
         $xpathLinksWithUrl = '//a[@href]';
-        $links = $domCrawler->filterXPath($xpathLinksWithUrl)->each(function ($node, $i) use ($foreignLinks) {
-            $url = $node->attr('href');
+        $client = $this->client;
+        $links = $domCrawler->filterXPath($xpathLinksWithUrl)->each(
+            function ($node, $i) use ($foreignLinks, $client) {
+                $url = $node->attr('href');
 
-            // this url has already been parsed
-            if ($url === '#') {
-                return array();
+                // this url has already been parsed
+                if ($url === '#') {
+                    return array();
+                }
+
+                $url = $client->convertToAbsoluteUrl($url);
+                
+                // no foreign links
+                if ($foreignLinks === false && strpos($url, $client->getStartUrl()) !== 0) {
+                    return array();
+                }
+
+                return array(
+                    'hash'   => $client->createHashFromUrl($url),
+                    'target' => $url
+                );
             }
-
-            $url = $this->client->convertToAbsoluteUrl($url);
-            
-            // no foreign links
-            if ($foreignLinks === false && strpos($url, $this->client->getStartUrl()) !== 0) {
-                return array();
-            }
-
-            return array(
-                'hash'   => $this->client->createHashFromUrl($url),
-                'target' => $url
-            );
-        });
+        );
 
         $cleanLinks = array();
         foreach ($links as $link) {
