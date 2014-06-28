@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f47470ac2fb1533ce5b2eaace3f20e81",
+    "hash": "8f428bc99f1d82bfcf54cf5649996cf4",
     "packages": [
         {
             "name": "guzzle/guzzle",
@@ -268,6 +268,57 @@
             "description": "Symfony EventDispatcher Component",
             "homepage": "http://symfony.com",
             "time": "2014-04-29 10:13:57"
+        },
+        {
+            "name": "zaininnari/html-minifier",
+            "version": "0.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zaininnari/html-minifier.git",
+                "reference": "4ccb3db3ea40e3f1f94d006190d2e5467a0bb818"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zaininnari/html-minifier/zipball/4ccb3db3ea40e3f1f94d006190d2e5467a0bb818",
+                "reference": "4ccb3db3ea40e3f1f94d006190d2e5467a0bb818",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "zz": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "The BSD 3-Clause License"
+            ],
+            "authors": [
+                {
+                    "name": "Google inc",
+                    "homepage": "http://www.chromium.org/blink",
+                    "role": "Author"
+                },
+                {
+                    "name": "zaininnari",
+                    "homepage": "https://github.com/zaininnari/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The Blink HTMLTokenizer ported to PHP.",
+            "homepage": "https://github.com/zaininnari/html-minifier",
+            "keywords": [
+                "Blink",
+                "HTML minify",
+                "php"
+            ],
+            "time": "2013-10-27 09:21:31"
         }
     ],
     "packages-dev": [
@@ -976,7 +1027,7 @@
 
     ],
     "platform": {
-        "php": ">=5.3.2"
+        "php": ">=5.3.3"
     },
     "platform-dev": [
 

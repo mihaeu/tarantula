@@ -1,6 +1,6 @@
 <?php
 
-namespace Mihaeu\Tarantula;
+namespace Mihaeu\Tarantula\Console;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -11,6 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Mihaeu\Tarantula\Crawler;
 use Mihaeu\Tarantula\HttpClient;
 use Mihaeu\Tarantula\Action\SaveHashedResultAction;
+use Mihaeu\Tarantula\Action\MinifyHtmlAction;
 
 class CrawlCommand extends Command
 {
@@ -32,7 +33,10 @@ class CrawlCommand extends Command
                 'password', 'p', InputOption::VALUE_OPTIONAL, 'Password for HTTP basic auth.'
             )
             ->addOption(
-                'save-hashed', null, InputOption::VALUE_OPTIONAL, 'Writable directory in which the crawled files are stored.'
+                'save-hashed', 's', InputOption::VALUE_OPTIONAL, 'Writable directory in which the crawled files are stored.', sys_get_temp_dir()
+            )
+            ->addOption(
+                'minify-html', 'm', InputOption::VALUE_NONE, 'Minify HTML of the crawled results.'
             );
     }
 
@@ -47,7 +51,11 @@ class CrawlCommand extends Command
         // set up crawler
         $crawler = new Crawler($client);
 
-        // add actions (order matters!)
+        // add actions
+        // Order matters: actions that persist the result should be registered last
+        if ($input->getOption('minify-html')) {
+            $crawler->addAction(new MinifyHtmlAction());
+        }
         if ($input->getOption('save-hashed')) {
             $crawler->addAction(new SaveHashedResultAction($input->getOption('save-hashed')));
         }
