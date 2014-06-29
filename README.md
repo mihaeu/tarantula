@@ -4,7 +4,9 @@
 
 Tarantula is a web crawler written in PHP. It utilizes the amazing work of the people behind Guzzle and Symfony's DOMCrawler.
 
-## Installation (global)
+## Installation
+
+### Global tool
 
 Make sure `~/.composer/bin` is in your `$PATH` and then simply execute:
 
@@ -12,7 +14,7 @@ Make sure `~/.composer/bin` is in your `$PATH` and then simply execute:
 composer global require mihaeu/tarantula:1.*
 ```
 
-## Installation (library)
+### Library
 
 Assuming you are using [Composer](http://getcomposer.org), add the following to your `composer.json` file:
 
@@ -25,6 +27,36 @@ Assuming you are using [Composer](http://getcomposer.org), add the following to 
 ```
 
 or use Composer's cli tool `composer require mihaeu/tarantula:1.*`.
+
+## Usage
+
+### Global tool
+
+Right now the only command available is `crawl`. Some usage examples would be:
+
+```bash
+# most basic use case
+tarantula crawl "http://google.com"
+
+# go deeper
+tarantula crawl "http://products.com/categories" --depth=4
+
+# dump crawled file in hashed files
+tarantula crawl "http://myblog.com" --save-hashed=/tmp/blog-backup --minify-html
+
+# HTTP basic auth
+tarantula crawl "http://secure.com" --user=admin --password=admin
+```
+
+For all arguments and options use the `help` command:
+
+```bash
+tarantula help                    # displays all available commands
+tarantula help crawl              # all arguments and options for the crawler
+tarantula crawl "..." --verbose   # switch on debugging output
+```
+
+### Library
 
 Have a look at the tests to see what's possible or just try the following in your code:
 
@@ -47,6 +79,20 @@ If you want to get a quick overview of the project, I recommend running the test
 ```bash
 vendor/bin/phpunit --testdox
 ```
+
+## To Do
+
+ - [ ] filters (url, filetype, etc.)
+ - [ ] allow for Guzzle to be configured via command line
+ - [ ] more actions (save plain result, crawl via DOM/XPath, ...)
+
+## Troubleshooting
+
+### Composer global install fails
+
+This is most likely due to a conflict with some requirements of other global installs. Unfortunately Composer's architecture doesn't offer a solution for this yet. I tried to keep the requirements Tarantula loose to avoid this problem.
+
+If you want to have Tarantula available throughout your system, just install to another directory (e.g. using `composer create-project`) and symlink `bin/tarantula` into a folder in your `$PATH`.
 
 ## License
 
