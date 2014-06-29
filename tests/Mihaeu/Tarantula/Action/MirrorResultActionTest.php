@@ -1,23 +1,20 @@
 <?php
 
-use Mihaeu\Tarantula\Action\SaveHashedResultAction;
+use Mihaeu\Tarantula\Action\MirrorResultAction;
 use Mihaeu\Tarantula\Result;
 
-class SaveHashedResultActionTest extends PHPUnit_Framework_TestCase
+class MirrorResultActionTest extends PHPUnit_Framework_TestCase
 {
-    public function testSavesResultDataUnderHashedPathOneLevelDeep()
+    public function testMirrorsUrlStructure()
     {
-        $result = new Result('0123456789', 'http://example.com', '<html>');
+        $result = new Result('', 'https://google.com/test/site.html', '<wayne>');
         $testFolder = sys_get_temp_dir().DIRECTORY_SEPARATOR.'phpunit-'.date('Y-m-d-H-i-s').rand();
         mkdir($testFolder);
-        
-        $action = new SaveHashedResultAction($testFolder);
-        $processedResult = $action->execute($result);
 
-        $savedFile = $testFolder.DIRECTORY_SEPARATOR.'0'.DIRECTORY_SEPARATOR.'0123456789';
-        $this->assertTrue(file_exists($savedFile));
-        $this->assertEquals('<html>', file_get_contents($savedFile));
-        
+        $action = new MirrorResultAction($testFolder);
+        $processedResult = $action->execute($result);
+        $this->assertEquals('<wayne>', file_get_contents($testFolder.DIRECTORY_SEPARATOR.'google.com/test/site.html'));
+
         $this->rrmdir($testFolder);
         $this->assertFalse(file_exists($testFolder));
     }

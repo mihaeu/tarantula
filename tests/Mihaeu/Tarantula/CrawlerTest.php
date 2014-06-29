@@ -29,6 +29,10 @@ class CrawlerTest extends PHPUnit_Framework_TestCase
 
     public function testCrawlsGoogle()
     {
+        if (!@file_get_contents('http://google.com', 'r')) {
+            $this->markTestSkipped('No internet connection ...');
+        }
+        
         $crawler = new Crawler(new HttpClient('http://google.com'));
         $links = $crawler->go(1);
         $this->assertNotEmpty($links);
