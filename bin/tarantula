@@ -1,13 +1,13 @@
 #!/usr/bin/env php
 <?php
 
-$files = [
+$files = array(
     // installed as composer dependency: %ROOT%/vendor/bin/submod
     __DIR__.'/../autoload.php',
 
     // installed as main package: %ROOT%/bin/submod
     __DIR__.'/../vendor/autoload.php'
-];
+);
 foreach ($files as $file) {
     if (file_exists($file)) {
         require $file;
