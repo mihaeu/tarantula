@@ -1,18 +1,16 @@
 #!/usr/bin/env php
 <?php
 
-$files = array(
-    // installed as composer dependency: %ROOT%/vendor/bin/submod
-    __DIR__.'/../autoload.php',
-
-    // installed as main package: %ROOT%/bin/submod
-    __DIR__.'/../vendor/autoload.php'
-);
-foreach ($files as $file) {
-    if (file_exists($file)) {
-        require $file;
-        break;
-    }
+if (is_file(__DIR__ . '/../vendor/autoload.php')) {
+    require(__DIR__ . '/../vendor/autoload.php');
+} elseif (is_file(__DIR__ . '/../../../autoload.php')) {
+    require(__DIR__ . '/../../../autoload.php');
+} else {
+    die(
+        'You must set up the Tarantula\'s dependencies, run the following commands:' . PHP_EOL .
+        'curl -s http://getcomposer.org/installer | php' . PHP_EOL .
+        'php composer.phar install' . PHP_EOL
+    );
 }
 
 use Mihaeu\Tarantula\Console\CrawlCommand;
