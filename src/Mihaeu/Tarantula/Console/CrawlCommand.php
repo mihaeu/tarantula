@@ -33,7 +33,10 @@ class CrawlCommand extends Command
                 'password', 'p', InputOption::VALUE_OPTIONAL, 'Password for HTTP basic auth.'
             )
             ->addOption(
-                'save-hashed', 's', InputOption::VALUE_OPTIONAL, 'Writable directory in which the crawled files are stored.', sys_get_temp_dir()
+                'mirror', null, InputOption::VALUE_OPTIONAL, 'Mirror the crawled files to a local directory.', sys_get_temp_dir()
+            )
+            ->addOption(
+                'save-hashed', 's', InputOption::VALUE_OPTIONAL, 'Save crawled results using hashed filenames.', sys_get_temp_dir()
             )
             ->addOption(
                 'minify-html', 'm', InputOption::VALUE_NONE, 'Minify HTML of the crawled results.'
