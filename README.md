@@ -1,6 +1,7 @@
 # Tarantula
 
 [![Build Status](https://travis-ci.org/mihaeu/tarantula.svg?branch=develop)](https://travis-ci.org/mihaeu/tarantula)
+[![Coverage Status](https://coveralls.io/repos/mihaeu/tarantula/badge.png)](https://coveralls.io/r/mihaeu/tarantula)
 
 Tarantula is a web crawler written in PHP. It utilizes the amazing work of the people behind Guzzle and Symfony's DOMCrawler.
 
