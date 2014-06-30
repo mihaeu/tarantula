@@ -18,8 +18,6 @@ class SaveHashedResultActionTest extends PHPUnit_Framework_TestCase
         $savedFile = $testFolder.DIRECTORY_SEPARATOR.'0'.DIRECTORY_SEPARATOR.'0123456789';
         $this->assertTrue(file_exists($savedFile));
         $this->assertEquals('<html>', file_get_contents($savedFile));
-
         $fs->remove($testFolder);
-        $this->assertFalse(file_exists($testFolder));
     }
 }

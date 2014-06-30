@@ -4,6 +4,8 @@ namespace Mihaeu\Tarantula\Action;
 
 use Mihaeu\Tarantula\Result;
 
+use Symfony\Component\Filesystem\Filesystem;
+
 /**
  * Save Hased Result Action
  *
@@ -41,11 +43,9 @@ class SaveHashedResultAction implements ActionInterface
     public function execute(Result $result)
     {
         $subDir = $this->dir.DIRECTORY_SEPARATOR.substr($result->getHash(), 0, 1);
-        if (!is_dir($subDir)) {
-            mkdir($subDir);
-        }
         $saveTo = $subDir.DIRECTORY_SEPARATOR.$result->getHash();
-        file_put_contents($saveTo, $result->getData());
+        $fs = new Filesystem($saveTo);
+        $fs->dumpFile($saveTo, $result->getData());
 
         return $result;
     }

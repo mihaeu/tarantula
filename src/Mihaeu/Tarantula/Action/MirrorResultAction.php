@@ -4,6 +4,8 @@ namespace Mihaeu\Tarantula\Action;
 
 use Mihaeu\Tarantula\Result;
 
+use Symfony\Component\Filesystem\Filesystem;
+
 /**
  * Save Hased Result Action
  *
@@ -42,10 +44,8 @@ class MirrorResultAction implements ActionInterface
     {
         $filename = preg_replace('/^((https?):\/\/)?(www.)?/', '', $result->getLink());
         $saveTo = $this->dir.DIRECTORY_SEPARATOR.$filename;
-        if (!is_dir(dirname($saveTo))) {
-            mkdir(dirname($saveTo), 0777, true);
-        }
-        file_put_contents($saveTo, $result->getData());
+        $fs = new Filesystem($saveTo);
+        $fs->dumpFile($saveTo, $result->getData());
 
         return $result;
     }
