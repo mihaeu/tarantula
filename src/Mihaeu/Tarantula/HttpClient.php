@@ -38,9 +38,8 @@ class HttpClient
     /**
      * Constructor.
      *
-     * @param  String $startUrl 
-     * 
-     * @return void
+     * @param String $startUrl
+     * @param Array  $options
      */
     public function __construct($startUrl, $options = array())
     {
@@ -84,9 +83,7 @@ class HttpClient
      * Download (HTML) content from a URL using Guzzle.
      * 
      * @param  String $url
-     * @param  Array  $options Options for Guzzle's request options see
-     *                         [Guzzle Documentation](http://docs.guzzlephp.org/en/latest/quickstart.html#make-a-request)
-     * 
+     *
      * @return String
      */
     public function downloadContent($url)
