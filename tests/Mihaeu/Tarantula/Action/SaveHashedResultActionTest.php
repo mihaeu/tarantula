@@ -9,7 +9,7 @@ class SaveHashedResultActionTest extends PHPUnit_Framework_TestCase
     {
         $result = new Result('0123456789', 'http://example.com', '<html>');
         $testFolder = sys_get_temp_dir().DIRECTORY_SEPARATOR.'phpunit-'.date('Y-m-d-H-i-s').rand();
-        $fs = new Symfony\Component\Filesystem\Filesystem($testFolder);
+        $fs = new Symfony\Component\Filesystem\Filesystem();
         $fs->mkdir($testFolder);
 
         $action = new SaveHashedResultAction($testFolder);

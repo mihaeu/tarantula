@@ -44,7 +44,7 @@ class SaveHashedResultAction implements ActionInterface
     {
         $subDir = $this->dir.DIRECTORY_SEPARATOR.substr($result->getHash(), 0, 1);
         $saveTo = $subDir.DIRECTORY_SEPARATOR.$result->getHash();
-        $fs = new Filesystem($saveTo);
+        $fs = new Filesystem();
         $fs->dumpFile($saveTo, $result->getData());
 
         return $result;

@@ -2,7 +2,8 @@
 
 namespace Mihaeu\Tarantula;
 
-use Mihaeu\Tarantula\Action\ActionInterface; 
+use Mihaeu\Tarantula\Action\ActionInterface;
+use Mihaeu\Tarantula\Filter\FilterInterface;
 
 use Symfony\Component\DomCrawler\Crawler as DOMCrawler;
 
@@ -29,16 +30,17 @@ class Crawler
     private $actions = array();
 
     /**
+     * @var Array
+     */
+    private $filters = array();
+
+    /**
      * Constructor.
      *
      * @param HttpClient $client
-     * @param  Array   $options  Options for Guzzle's request options see
-     *                           [Guzzle Documentation](http://docs.guzzlephp.org/en/latest/quickstart.html#make-a-request)
-     *                           E.g. ['auth' =>  ['admin', 'admin']] for basic authentication
      */
-    public function __construct(HttpClient $client, $options = array())
+    public function __construct(HttpClient $client)
     {
-        $client->setOptions($options);
         $this->client = $client;
     }
 
@@ -56,19 +58,16 @@ class Crawler
             $url = $this->client->getStartUrl();
         }
 
+        if ($url !== $this->client->getStartUrl() && !$this->urlPassesFilters($url)) {
+            return array();
+        }
+
         // download from the url
         $data = $this->client->downloadContent($url);
         if (empty($data)) {
             return array();
         }
-
-        // process the result
-        $hash = $this->client->createHashFromUrl($url);
-        $result = new Result($hash, $url, $data);
-        foreach ($this->actions as $action) {
-            $result = $action->execute($result);
-        }
-        unset($result);
+        $this->processActions($url, $data);
 
         // when we reach max. depth we don't need to go deeper and download more
         if ($depth-- !== 0) {
@@ -86,6 +85,39 @@ class Crawler
     }
 
     /**
+     * Runs all filters against the url.
+     *
+     * @param String $url
+     *
+     * @return bool
+     */
+    public function urlPassesFilters($url)
+    {
+        foreach ($this->filters as $filter) {
+            if (!$filter->filter($url)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Process the result by execution all actions.
+     *
+     * @param String $url
+     * @param String $data
+     */
+    public function processActions($url, $data)
+    {
+        $hash = $this->client->createHashFromUrl($url);
+        $result = new Result($hash, $url, $data);
+        foreach ($this->actions as $action) {
+            $result = $action->execute($result);
+        }
+        unset($result);
+    }
+
+    /**
      * Add actions that will be executed on the results.
      * 
      * @param ActionInterface $action
@@ -93,6 +125,16 @@ class Crawler
     public function addAction(ActionInterface $action)
     {
         $this->actions[] = $action;
+    }
+
+    /**
+     * Add another filter.
+     *
+     * @param FilterInterface $filter
+     */
+    public function addFilter(FilterInterface $filter)
+    {
+        $this->filters[] = $filter;
     }
 
     /**

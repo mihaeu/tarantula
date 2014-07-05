@@ -1,9 +1,10 @@
-# Tarantula
+# [![Logo](https://cdn1.iconfinder.com/data/icons/desktop-halloween/48/Spider.png)](https://github.com/mihaeu/tarantula) Tarantula 
 
 [![Build Status](https://travis-ci.org/mihaeu/tarantula.svg?branch=develop)](https://travis-ci.org/mihaeu/tarantula)
 [![Coverage Status](https://coveralls.io/repos/mihaeu/tarantula/badge.png)](https://coveralls.io/r/mihaeu/tarantula)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/4fbb06d2-4465-4ed9-9917-c9626dded801/mini.png)](https://insight.sensiolabs.com/projects/4fbb06d2-4465-4ed9-9917-c9626dded801)
 
-Tarantula is a web crawler written in PHP. It utilizes the amazing work of the people behind Guzzle and Symfony's DOMCrawler.
+Tarantula is a web crawler written in PHP. It utilizes the amazing work of the people behind Guzzle and Symfony's DomCrawler.
 
 ## Installation
 
@@ -41,6 +42,13 @@ tarantula crawl "http://google.com"
 
 # go deeper
 tarantula crawl "http://products.com/categories" --depth=4
+
+# mirror
+tarantula crawl "http://myblog.com" --mirror=/tmp/blog-backup
+
+# filters
+tarantula crawl "http://myblog.com" --contains=yolo
+tarantula crawl "http://myblog.com" --regex="(post)\|(\d+)"
 
 # dump crawled file in hashed files
 tarantula crawl "http://myblog.com" --save-hashed=/tmp/blog-backup --minify-html
@@ -94,6 +102,16 @@ vendor/bin/phpunit --testdox
 This is most likely due to a conflict with some requirements of other global installs. Unfortunately Composer's architecture doesn't offer a solution for this yet. I tried to keep the requirements Tarantula loose to avoid this problem.
 
 If you want to have Tarantula available throughout your system, just install to another directory (e.g. using `composer create-project`) and symlink `bin/tarantula` into a folder in your `$PATH`.
+
+## Thanks to
+
+ - [Symfony](http://symfony.com/)/[SensioLabs](http://sensiolabs.com/en) and especially [Fabien Potencier](http://fabien.potencier.org/) for what he does for PHP (for this particular project the [DomCrawler](https://github.com/symfony/DomCrawler))
+ - the [Guzzle](http://guzzlephp.org/) team for their awesome HTTP client
+ - [Aha Soft](http://www.aha-soft.com/) for the logo
+ - the [Composer](https://getcomposer.org/) team for revolutionizing the way I and many others write PHP
+ - [GitHub](https://github.com) for redefining collaboration
+ - [Travis CI](https://travis-ci.org/) for improving the quality and compatibility of thousands of open source projects
+ - [Sebastian Bergmann](http://sebastian-bergmann.de/) for [PHPUnit](http://phpunit.de) and many other awesome QA tools
 
 ## License
 
