@@ -3,6 +3,7 @@
 namespace Mihaeu\Tarantula\Console;
 
 use Mihaeu\Tarantula\Action\MirrorResultAction;
+use Mihaeu\Tarantula\Action\XPathTextAction;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -56,6 +57,9 @@ class CrawlCommand extends Command
             ->addOption(
                 'regex', null, InputOption::VALUE_REQUIRED, 'Accept only URLs that match the regular expression. Remember to escape shell characters.'
             )
+            ->addOption(
+                'xpath', null, InputOption::VALUE_REQUIRED, 'Search for a XPath expression and print the matching text.'
+            )
         ;
     }
 
@@ -92,8 +96,11 @@ class CrawlCommand extends Command
         if ($input->getOption('mirror')) {
             $crawler->addAction(new MirrorResultAction($input->getOption('mirror')));
         }
+        if ($input->getOption('xpath')) {
+            $crawler->addAction(new XPathTextAction($input->getOption('xpath')));
+        }
 
-        $depth = $input->getOption('depth') ? $input->getOption('depth') : 1;
+        $depth = (int) $input->getOption('depth');
         $links = $crawler->go($depth);
 
         if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
