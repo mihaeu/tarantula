@@ -119,7 +119,7 @@ class HttpClient
     }
 
     /**
-     * Converts a url like /product to http://example.com/product.
+     * Converts a url like /product to http://example.com/product and strips trailing slashes.
      *
      * @param  String $url
      * 
@@ -130,7 +130,7 @@ class HttpClient
         if (strpos($url, '/') === 0 || strpos($url, 'http') !== 0) {
             $url = $this->startUrl.$url;
         }
-        return $url;
+        return rtrim($url, '/');
     }
 
     /**

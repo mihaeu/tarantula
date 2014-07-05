@@ -38,13 +38,9 @@ class Crawler
      * Constructor.
      *
      * @param HttpClient $client
-     * @param  Array   $options  Options for Guzzle's request options see
-     *                           [Guzzle Documentation](http://docs.guzzlephp.org/en/latest/quickstart.html#make-a-request)
-     *                           E.g. ['auth' =>  ['admin', 'admin']] for basic authentication
      */
-    public function __construct(HttpClient $client, $options = array())
+    public function __construct(HttpClient $client)
     {
-        $client->setOptions($options);
         $this->client = $client;
     }
 
@@ -62,7 +58,7 @@ class Crawler
             $url = $this->client->getStartUrl();
         }
 
-        if (!$this->urlPassesFilters($url)) {
+        if ($url !== $this->client->getStartUrl() && !$this->urlPassesFilters($url)) {
             return array();
         }
 
