@@ -16,7 +16,7 @@ class XPathTextAction implements ActionInterface
     /**
      * @var String
      */
-    private $xpath;
+    protected $xpath;
 
     /**
      * Constructor.

@@ -2,8 +2,6 @@
 
 namespace Mihaeu\Tarantula\Console;
 
-use Mihaeu\Tarantula\Action\MirrorResultAction;
-use Mihaeu\Tarantula\Action\XPathTextAction;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,6 +13,9 @@ use Mihaeu\Tarantula\HttpClient;
 
 use Mihaeu\Tarantula\Action\SaveHashedResultAction;
 use Mihaeu\Tarantula\Action\MinifyHtmlAction;
+use Mihaeu\Tarantula\Action\MirrorResultAction;
+use Mihaeu\Tarantula\Action\XPathTextAction;
+use Mihaeu\Tarantula\Action\CssTextAction;
 
 use Mihaeu\Tarantula\Filter\ContainsFilter;
 use Mihaeu\Tarantula\Filter\ContainsNotFilter;
@@ -60,6 +61,9 @@ class CrawlCommand extends Command
             ->addOption(
                 'xpath', null, InputOption::VALUE_REQUIRED, 'Search for a XPath expression and print the matching text.'
             )
+            ->addOption(
+                'css', null, InputOption::VALUE_REQUIRED, 'Search for a css path and print the matching text.'
+            )
         ;
     }
 
@@ -98,6 +102,9 @@ class CrawlCommand extends Command
         }
         if ($input->getOption('xpath')) {
             $crawler->addAction(new XPathTextAction($input->getOption('xpath')));
+        }
+        if ($input->getOption('css')) {
+            $crawler->addAction(new CssTextAction($input->getOption('css')));
         }
 
         $depth = (int) $input->getOption('depth');
