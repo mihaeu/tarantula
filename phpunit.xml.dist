@@ -16,7 +16,12 @@
 
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="false">
-            <directory>src</directory>
+            <directory>./src</directory>
+            <exclude>
+                <directory>./vendor</directory>
+                <directory>./tests</directory>
+                <directory>./bin</directory>
+            </exclude>
         </whitelist>
     </filter>
 
