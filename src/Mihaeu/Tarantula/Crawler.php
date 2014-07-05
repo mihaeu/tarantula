@@ -58,6 +58,7 @@ class Crawler
             $url = $this->client->getStartUrl();
         }
 
+        // apply filters
         if ($url !== $this->client->getStartUrl() && !$this->urlPassesFilters($url)) {
             return array();
         }
@@ -69,10 +70,16 @@ class Crawler
         }
         $this->processActions($url, $data);
 
+        // add current url to links
+        $currentHash = $this->client->createHashFromUrl($url);
+        if (!isset($this->allLinks[$currentHash])) {
+            $this->allLinks[$currentHash] = $this->client->convertToAbsoluteUrl($url);
+        }
+
         // when we reach max. depth we don't need to go deeper and download more
         if ($depth-- !== 0) {
             // parse sub links
-            $links = $this->findAllLinks($data);
+            $links = $this->filterUrls($this->findAllLinks($data));
             $this->allLinks = array_merge($this->allLinks, $links);
 
             // recursive calls provide depth
@@ -82,6 +89,17 @@ class Crawler
         }
 
         return $this->allLinks;
+    }
+
+    public function filterUrls(Array $urls)
+    {
+        $filteredUrls = array();
+        foreach ($urls as $hash => $url) {
+            if ($this->urlPassesFilters($url)) {
+                $filteredUrls[$hash] = $url;
+            }
+        }
+        return $filteredUrls;
     }
 
     /**
