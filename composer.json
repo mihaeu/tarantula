@@ -11,8 +11,8 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Mihaeu": "src"
+        "psr-4": {
+            "Mihaeu\\Tarantula\\": ["src/", "tests/unit/"]
         }
     },
     "require": {
