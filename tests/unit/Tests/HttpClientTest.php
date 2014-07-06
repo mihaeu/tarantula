@@ -8,13 +8,9 @@ class HttpClientTest extends BaseUnitTest
 {
     public function testDownloadsDefaultGooglePage()
     {
-        if (!@file_get_contents('http://google.com', 'r')) {
-            $this->markTestSkipped('No internet connection ...');
-        }
-        
         $client = new HttpClient('doesnt matter for this test');
-        $html = $client->downloadContent('http://google.com');
-        $this->assertContains('https://accounts.google.com', $html);
+        $html = $client->downloadContent($this->getDemoUrl());
+        $this->assertContains('mike-on-a-bike', $html);
     }
 
     public function testDoesntCrashOnBadUrl()

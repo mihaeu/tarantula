@@ -19,7 +19,7 @@ abstract class BaseUnitTest extends \PHPUnit_Framework_TestCase
     /**
      * @var string
      */
-    protected $host = 'localhost:9137';
+    protected $host = 'localhost:8088';
 
     /**
      * Starts the internal PHP server using excerpts from my (awesome)

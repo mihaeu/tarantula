@@ -31,12 +31,12 @@ class CrawlerTest extends BaseUnitTest
 
     public function testCrawlsGoogle()
     {
-        if (!@file_get_contents('http://google.com', 'r')) {
-            $this->markTestSkipped('No internet connection ...');
-        }
-        
-        $crawler = new Crawler(new HttpClient('http://google.com'));
+        $this->startDemoServer();
+
+        $crawler = new Crawler(new HttpClient($this->getDemoUrl()));
         $links = $crawler->go(1);
         $this->assertNotEmpty($links);
+
+        $this->stopDemoServer();
     }
 }

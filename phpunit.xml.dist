@@ -27,15 +27,6 @@
 
     <listeners>
         <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
-        <listener class="PHPUnit\Runner\CleverAndSmart\TestListener">
-            <arguments>
-                <object class="PHPUnit\Runner\CleverAndSmart\Storage\Sqlite3Storage">
-                    <arguments>
-                        <string>/tmp/.phpunit-cas.db</string>
-                    </arguments>
-                </object>
-            </arguments>
-        </listener>
     </listeners>
 
 </phpunit>
