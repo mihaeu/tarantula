@@ -12,11 +12,12 @@ class MirrorResultActionTest extends BaseUnitTest
     public function testMirrorsUrlStructure()
     {
         $urls = array(
-            'http://www.google.com/test/site.html',
-            'https://google.com/test/site.html',
-            'www.google.com/test/site.html'
+            'http://www.google.com/test/site.html' => 'google.com/test/site.html',
+            'https://google.com/test/site.html'    => 'google.com/test/site.html',
+            'www.google.com/test/site.html'        => 'google.com/test/site.html',
+            'www.google.com/test'                  => 'google.com/test_'
         );
-        foreach ($urls as $url) {
+        foreach ($urls as $url => $expectedOutput) {
             $result = new Result('', $url, '<wayne>');
             $testFolder = sys_get_temp_dir().DIRECTORY_SEPARATOR.'phpunit-'.date('Y-m-d-H-i-s').rand();
             $fs = new Filesystem();
@@ -24,7 +25,7 @@ class MirrorResultActionTest extends BaseUnitTest
 
             $action = new MirrorResultAction($testFolder);
             $action->execute($result);
-            $this->assertEquals('<wayne>', file_get_contents($testFolder.DIRECTORY_SEPARATOR.'google.com/test/site.html'));
+            $this->assertEquals('<wayne>', file_get_contents($testFolder.DIRECTORY_SEPARATOR.$expectedOutput));
             $fs->remove($testFolder);
         }
     }
@@ -39,5 +40,13 @@ class MirrorResultActionTest extends BaseUnitTest
 
         $this->assertFalse($action->isPrettyUrl('http://google.com'));
         $this->assertFalse($action->isPrettyUrl('google.com/my/deep/url.php'));
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testFailsOnBadDirectory()
+    {
+        new MirrorResultAction('@@@not a vali dir@@@');
     }
 }

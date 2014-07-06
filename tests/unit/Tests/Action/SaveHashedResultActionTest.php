@@ -24,4 +24,12 @@ class SaveHashedResultActionTest extends BaseUnitTest
         $this->assertEquals('<html>', file_get_contents($savedFile));
         $fs->remove($testFolder);
     }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testFailsOnBadDirectory()
+    {
+        new SaveHashedResultAction('@@@not a vali dir@@@');
+    }
 }
