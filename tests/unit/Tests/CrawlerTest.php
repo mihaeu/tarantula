@@ -31,12 +31,12 @@ class CrawlerTest extends BaseUnitTest
 
     public function testCrawlsGoogle()
     {
-        $this->startDemoServer();
-
-        $crawler = new Crawler(new HttpClient($this->getDemoUrl()));
-        $links = $crawler->go(1);
+        $crawler = new Crawler(new HttpClient(DemoServer::URL));
+        $links = $crawler->go(0);
         $this->assertNotEmpty($links);
+    }
 
-        $this->stopDemoServer();
+    public function testFiltersUrls()
+    {
     }
 }

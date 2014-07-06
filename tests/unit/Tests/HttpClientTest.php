@@ -9,7 +9,7 @@ class HttpClientTest extends BaseUnitTest
     public function testDownloadsDefaultGooglePage()
     {
         $client = new HttpClient('doesnt matter for this test');
-        $html = $client->downloadContent($this->getDemoUrl());
+        $html = $client->downloadContent(DemoServer::URL);
         $this->assertContains('mike-on-a-bike', $html);
     }
 
@@ -33,7 +33,7 @@ class HttpClientTest extends BaseUnitTest
         );
     }
 
-    public function testConvertsToFullyQuallifiedUrl()
+    public function testConvertsToFullyQualifiedUrl()
     {
         $client = new HttpClient('http://google.com/');
         $this->assertEquals(
