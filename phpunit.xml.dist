@@ -1,5 +1,5 @@
 <phpunit colors="true"
-         bootstrap="vendor/autoload.php"
+         bootstrap="tests/unit/bootstrap.php"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
@@ -24,5 +24,9 @@
             </exclude>
         </whitelist>
     </filter>
+
+    <listeners>
+        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
+    </listeners>
 
 </phpunit>
