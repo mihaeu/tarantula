@@ -1,9 +1,12 @@
 <?php
 
+namespace Mihaeu\Tarantula\Tests\Action;
+
 use Mihaeu\Tarantula\Action\MinifyHtmlAction;
 use Mihaeu\Tarantula\Result;
+use Mihaeu\Tarantula\Tests\BaseUnitTest;
 
-class MinifyHtmlActionTest extends PHPUnit_Framework_TestCase
+class MinifyHtmlActionTest extends BaseUnitTest
 {
     public function testStripsLineEndingsAndOtherWhitespaces()
     {

@@ -1,15 +1,19 @@
 <?php
 
+namespace Mihaeu\Tarantula\Tests\Action;
+
 use Mihaeu\Tarantula\Action\SaveHashedResultAction;
 use Mihaeu\Tarantula\Result;
+use Mihaeu\Tarantula\Tests\BaseUnitTest;
+use Symfony\Component\Filesystem\Filesystem;
 
-class SaveHashedResultActionTest extends PHPUnit_Framework_TestCase
+class SaveHashedResultActionTest extends BaseUnitTest
 {
     public function testSavesResultDataUnderHashedPathOneLevelDeep()
     {
         $result = new Result('0123456789', 'http://example.com', '<html>');
         $testFolder = sys_get_temp_dir().DIRECTORY_SEPARATOR.'phpunit-'.date('Y-m-d-H-i-s').rand();
-        $fs = new Symfony\Component\Filesystem\Filesystem();
+        $fs = new Filesystem();
         $fs->mkdir($testFolder);
 
         $action = new SaveHashedResultAction($testFolder);

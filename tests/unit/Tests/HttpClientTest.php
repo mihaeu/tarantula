@@ -1,8 +1,10 @@
 <?php
 
+namespace Mihaeu\Tarantula\Tests;
+
 use Mihaeu\Tarantula\HttpClient;
 
-class HttpClientTest extends PHPUnit_Framework_TestCase
+class HttpClientTest extends BaseUnitTest
 {
     public function testDownloadsDefaultGooglePage()
     {

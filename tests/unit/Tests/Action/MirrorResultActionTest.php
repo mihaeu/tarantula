@@ -1,9 +1,13 @@
 <?php
 
+namespace Mihaeu\Tarantula\Tests\Action;
+
 use Mihaeu\Tarantula\Action\MirrorResultAction;
 use Mihaeu\Tarantula\Result;
+use Mihaeu\Tarantula\Tests\BaseUnitTest;
+use Symfony\Component\Filesystem\Filesystem;
 
-class MirrorResultActionTest extends PHPUnit_Framework_TestCase
+class MirrorResultActionTest extends BaseUnitTest
 {
     public function testMirrorsUrlStructure()
     {
@@ -15,7 +19,7 @@ class MirrorResultActionTest extends PHPUnit_Framework_TestCase
         foreach ($urls as $url) {
             $result = new Result('', $url, '<wayne>');
             $testFolder = sys_get_temp_dir().DIRECTORY_SEPARATOR.'phpunit-'.date('Y-m-d-H-i-s').rand();
-            $fs = new Symfony\Component\Filesystem\Filesystem();
+            $fs = new Filesystem();
             $fs->mkdir($testFolder);
 
             $action = new MirrorResultAction($testFolder);

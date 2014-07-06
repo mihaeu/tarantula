@@ -1,9 +1,11 @@
 <?php
 
+namespace Mihaeu\Tarantula\Tests;
+
 use Mihaeu\Tarantula\Crawler;
 use Mihaeu\Tarantula\HttpClient;
 
-class CrawlerTest extends PHPUnit_Framework_TestCase
+class CrawlerTest extends BaseUnitTest
 {
     public function testFindsAllLinks()
     {
