@@ -8,6 +8,8 @@ class HttpClientTest extends BaseUnitTest
 {
     public function testDownloadsDefaultGooglePage()
     {
+        $this->skipTestIfTestingWithPHP53();
+
         $client = new HttpClient('doesnt matter for this test');
         $html = $client->downloadContent(DemoServer::URL);
         $this->assertContains('mike-on-a-bike', $html);

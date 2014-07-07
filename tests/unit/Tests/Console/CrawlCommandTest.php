@@ -12,6 +12,8 @@ class HttpClientTest extends BaseUnitTest
 {
     public function testCrawls()
     {
+        $this->skipTestIfTestingWithPHP53();
+
         $application = new Application();
         $application->add(new CrawlCommand());
 

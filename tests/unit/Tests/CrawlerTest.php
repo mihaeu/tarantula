@@ -35,6 +35,8 @@ EOT;
 
     public function testCrawlsDemoServer()
     {
+        $this->skipTestIfTestingWithPHP53();
+
         $crawler = new Crawler(new HttpClient(DemoServer::URL));
 
         // only root
@@ -48,6 +50,8 @@ EOT;
 
     public function testFiltersUrls()
     {
+        $this->skipTestIfTestingWithPHP53();
+
         $crawler = new Crawler(new HttpClient(DemoServer::URL));
 
         // match only links with "part"
@@ -59,6 +63,8 @@ EOT;
 
     public function testRunsActionsOnResults()
     {
+        $this->skipTestIfTestingWithPHP53();
+
         $crawler = new Crawler(new HttpClient(DemoServer::URL));
         $crawler->addAction(new CssTextAction('header .title'));
 
