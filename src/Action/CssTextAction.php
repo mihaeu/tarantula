@@ -2,9 +2,6 @@
 
 namespace Mihaeu\Tarantula\Action;
 
-use Mihaeu\Tarantula\Result;
-
-use Symfony\Component\DomCrawler\Crawler as DOMCrawler;
 use Symfony\Component\CssSelector\CssSelector;
 
 /**

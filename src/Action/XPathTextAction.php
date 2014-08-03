@@ -41,7 +41,7 @@ class XPathTextAction implements ActionInterface
         $domCrawler->addContent($result->getData());
 
         $domCrawler->filterXPath($this->xpath)->each(
-            function ($node) {
+            function (DOMCrawler $node) {
                 $text = trim($node->text());
                 if (!empty($text)) {
                     echo $text.PHP_EOL;

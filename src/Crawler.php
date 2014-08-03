@@ -171,7 +171,7 @@ class Crawler
         $xpathLinksWithUrl = '//a[@href]';
         $client = $this->client;
         $links = $domCrawler->filterXPath($xpathLinksWithUrl)->each(
-            function ($node, $i) use ($foreignLinks, $client) {
+            function (DOMCrawler $node, $i) use ($foreignLinks, $client) {
                 $url = $node->attr('href');
 
                 // this url has already been parsed
