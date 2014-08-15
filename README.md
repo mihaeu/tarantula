@@ -55,6 +55,12 @@ tarantula crawl "http://myblog.com" --save-hashed=/tmp/blog-backup --minify-html
 
 # HTTP basic auth
 tarantula crawl "http://secure.com" --user=admin --password=admin
+
+# search for "Avatar" on imdb
+bin/tarantula crawl "http://www.imdb.com/find?q=avatar&s=all" --depth=0 --quiet --css=".findSection td.result_text"
+
+# today's weather in seattle
+bin/tarantula crawl --depth=0 "http://www.weather.com/weather/today/Seattle+WA+USWA0395:1:US" --css=".wx-first" | head -n 2
 ```
 
 For all arguments and options use the `help` command:
