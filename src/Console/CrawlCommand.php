@@ -77,8 +77,29 @@ class CrawlCommand extends Command
 
         // set up crawler
         $crawler = new Crawler($client);
+        $this->addFilters($input, $crawler);
+        $this->addActions($input, $crawler);
 
-        // add filters
+        $depth = (int) $input->getOption('depth');
+        $links = $crawler->go($depth);
+
+        if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
+            $output->writeln('---------------------------------------------');
+            foreach ($links as $hash => $link) {
+                $output->writeln(sprintf('Found <info>%s</info>', $link));
+            }
+            $output->writeln('---------------------------------------------');
+        }
+
+        $output->writeln(sprintf('Links found <info>%s</info> (depth: %d)', count($links), $depth));
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param Crawler $crawler
+     */
+    private function addFilters(InputInterface $input, Crawler $crawler)
+    {
         if ($input->getOption('contains')) {
             $crawler->addFilter(new ContainsFilter($input->getOption('contains')));
         }
@@ -88,9 +109,17 @@ class CrawlCommand extends Command
         if ($input->getOption('regex')) {
             $crawler->addFilter(new RegexFilter($input->getOption('regex')));
         }
+    }
 
-        // add actions
-        // Order matters: actions that persist the result should be registered last
+    /**
+     * NOTE: Actions that persist the result should be registered last.
+     * NOTE: Order matters.
+     *
+     * @param InputInterface $input
+     * @param Crawler $crawler
+     */
+    private function addActions(InputInterface $input, Crawler $crawler)
+    {
         if ($input->getOption('minify-html')) {
             $crawler->addAction(new MinifyHtmlAction());
         }
@@ -106,18 +135,5 @@ class CrawlCommand extends Command
         if ($input->getOption('css')) {
             $crawler->addAction(new CssTextAction($input->getOption('css')));
         }
-
-        $depth = (int) $input->getOption('depth');
-        $links = $crawler->go($depth);
-
-        if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
-            $output->writeln('---------------------------------------------');
-            foreach ($links as $hash => $link) {
-                $output->writeln(sprintf('Found <info>%s</info>', $link));
-            }
-            $output->writeln('---------------------------------------------');
-        }
-
-        $output->writeln(sprintf('Links found <info>%s</info> (depth: %d)', count($links), $depth));
     }
 }

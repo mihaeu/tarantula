@@ -12,4 +12,4 @@ interface FilterInterface
      * @return bool
      */
     public function filter($url);
-} 
+}

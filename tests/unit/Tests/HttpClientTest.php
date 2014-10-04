@@ -43,4 +43,27 @@ class HttpClientTest extends BaseUnitTest
             $client->convertToAbsoluteUrl('/test')
         );
     }
+
+    /**
+     * I'm not sure if this is practical, because www1 might produce a different
+     * result than www15 (although it probably shouldn't)
+     */
+    /*
+    public function testSameUrlWithDifferentPrefixProducesSameHash()
+    {
+        $client = new HttpClient('http://google.com/');
+        $equalUrls = [
+            'http://www.google.com/test',
+            'http://google.com/test',
+            'www.google.com/test',
+            'google.com/test'
+        ];
+        foreach ($equalUrls as $url) {
+            $this->assertEquals(
+                '4539330648b80f94ef3bf911f6d77ac9',
+                $client->createHashFromUrl($url)
+            );
+        }
+    }
+    */
 }

@@ -130,7 +130,8 @@ class HttpClient
         if (strpos($url, '/') === 0 || strpos($url, 'http') !== 0) {
             $url = $this->startUrl.$url;
         }
-        return rtrim($url, '/');
+//        return rtrim($url, '/');
+        return $url;
     }
 
     /**
